@@ -336,6 +336,67 @@
             border-radius: 4px;
             font-weight: 700;
             font-size: 11px;
+            margin-right: 2px;
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+
+        .method-explanation-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-left: 4px solid #0d6efd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin: 15px 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: #212529;
+        }
+
+        .method-explanation-card h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #0d6efd;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .method-explanation-card p {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .formula-box {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-top: 10px;
+        }
+
+        .formula-box h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        .math-expression {
+            text-align: center;
+            padding: 6px 0;
+            font-family: "KaTeX_Main", "Times New Roman", serif;
+            font-size: 1.05rem;
+            overflow-x: auto;
+        }
+
+        .footer-note {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid var(--gray-200);
+            font-size: 12px;
+            color: var(--gray-600);
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -403,8 +464,6 @@
                         <input type="number" id="psatInput" class="input-field" step="any" placeholder="Calculée ou saisie" oninput="analyzeAndDisplay()">
                         <p class="input-help-text" id="psatStatus">Calculée automatiquement si TS et Pt d'ébullition sont renseignés.</p>
                     </div>
-					
-					
 
                     <div class="input-group">
                         <label class="input-label">🏷️ Mentions de Danger (Codes H)</label>
@@ -419,108 +478,38 @@
                 </div>
             </div>
 
-<!-- Bloc d'explication de la méthode de calcul de l'état du fluide -->
-<div class="method-explanation-card">
-  <h3>
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="12" y1="16" x2="12" y2="12"></line>
-      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-    </svg>
-    Méthode de détermination de l'état du fluide (Article 13 DESP)
-  </h3>
-  
-  <p>
-    Conformément à l'article 13 §1 de la <strong>Directive 2014/68/UE (DESP)</strong>, l'état physique du fluide à la température maximale admissible (<em>TS</em>) détermine si l'équipement relève du barème des <em>gaz/vapeurs</em> ou de celui des <em>liquides</em>.
-  </p>
+            <!-- Bloc d'explication de la méthode de calcul de l'état du fluide -->
+            <div class="method-explanation-card">
+              <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Méthode de détermination de l'état du fluide (Article 13 DESP)
+              </h3>
+              
+              <p>
+                Conformément à l'article 13 §1 de la <strong>Directive 2014/68/UE (DESP)</strong>, l'état physique du fluide à la température maximale admissible (<em>TS</em>) détermine si l'équipement relève du barème des <em>gaz/vapeurs</em> ou de celui des <em>liquides</em>.
+              </p>
 
-  <div class="formula-box">
-    <h4>Estimation de la pression de vapeur saturante (P<sub>sat</sub>)</h4>
-    <p>La pression de saturation absolue est estimée à la température <em>TS</em> selon la relation d'Antoine simplifiée :</p>
-    
-    <div class="math-expression">
-      P<sub>abs</sub> = exp &lsqb; 10,5 &times; ( 1 &minus; <sup>T<sub>ébullition, K</sub></sup>&frasl;<sub>TS<sub>K</sub></sub> ) &rsqb;
-    </div>
-    
-    <p>Convertie en pression relative (effective) :</p>
-    
-    <div class="math-expression">
-      P<sub>sat</sub>(TS) = P<sub>abs</sub> &minus; 1,013 bar
-    </div>
-    
-    <small><em>Note : Les températures doivent être exprimées en Kelvin (K = °C + 273,15).</em></small>
-  </div>
-</div>
-
-<style>
-  .method-explanation-card {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-left: 4px solid #0d6efd;
-    border-radius: 6px;
-    padding: 16px 20px;
-    margin: 15px 0;
-    font-family: system-ui, -apple-system, sans-serif;
-    color: #212529;
-  }
-
-  .method-explanation-card h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    color: #0d6efd;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .method-explanation-card p {
-    font-size: 0.92rem;
-    line-height: 1.5;
-    margin-bottom: 12px;
-  }
-
-  .formula-box, .threshold-box {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 12px 15px;
-    margin-top: 10px;
-  }
-
-  .formula-box h4, .threshold-box h4 {
-    margin: 0 0 8px 0;
-    font-size: 0.95rem;
-    color: #495057;
-  }
-
-  .math-expression {
-    text-align: center;
-    padding: 6px 0;
-    font-family: "KaTeX_Main", "Times New Roman", serif;
-    font-size: 1.05rem;
-    overflow-x: auto;
-  }
-
-  .threshold-box ul {
-    margin: 0;
-    padding-left: 20px;
-    font-size: 0.9rem;
-  }
-
-  .threshold-box li {
-    margin-bottom: 6px;
-  }
-
-  .threshold-box li:last-child {
-    margin-bottom: 0;
-  }
-
-  small {
-    color: #6c757d;
-    font-size: 0.8rem;
-  }
-</style>
+              <div class="formula-box">
+                <h4>Estimation de la pression de vapeur saturante (P<sub>sat</sub>)</h4>
+                <p>La pression de saturation absolue est estimée à la température <em>TS</em> selon la relation d'Antoine simplifiée :</p>
+                
+                <div class="math-expression">
+                  P<sub>abs</sub> = exp &lsqb; 10,5 &times; ( 1 &minus; <sup>T<sub>ébullition, K</sub></sup>&frasl;<sub>TS<sub>K</sub></sub> ) &rsqb;
+                </div>
+                
+                <p>Convertie en pression relative (effective) :</p>
+                
+                <div class="math-expression">
+                  P<sub>sat</sub>(TS) = P<sub>abs</sub> &minus; 1,013 bar
+                </div>
+                
+                <small style="color: #6c757d; font-size: 0.8rem;"><em>Note : Les températures doivent être exprimées en Kelvin (K = °C + 273,15).</em></small>
+              </div>
+            </div>
 
             <div class="info-box">
                 ℹ️ <strong>Règles de classification de l'état physique selon la DESP (Article 13 §1) :</strong><br>
@@ -549,28 +538,102 @@
                 <table class="reference-table">
                     <thead>
                         <tr>
-                            <th>Code H</th>
+                            <th>Codes H (Groupe 1)</th>
                             <th>Catégorie de danger (Article 13 DESP)</th>
-                            <th>Description</th>
+                            <th>Description synthétique</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><span class="code-badge">H200-H205</span></td><td>Explosibles instables</td><td>Dangers d'explosion, projection, incendie</td></tr>
-                        <tr><td><span class="code-badge">H220, H221, H230, H231</span></td><td>Gaz inflammables cat. 1-2</td><td>Gaz extrêmement/très inflammable</td></tr>
-                        <tr><td><span class="code-badge">H270</span></td><td>Gaz comburants cat. 1</td><td>Peut provoquer ou aggraver un incendie</td></tr>
-                        <tr><td><span class="code-badge">H224, H225</span></td><td>Liquides inflammables cat. 1-2</td><td>Liquide et vapeurs très/extrêmement inflammables</td></tr>
-                        <tr><td><span class="code-badge">H226</span></td><td>Liquides infl. cat. 3 (si TS > point d'éclair)</td><td>Liquide et vapeurs inflammables</td></tr>
-                        <tr><td><span class="code-badge">H240-H242</span></td><td>Substances autoréactives / Peroxydes</td><td>Peut s'enflammer/exploser sous la chaleur</td></tr>
-                        <tr><td><span class="code-badge">H250, H260, H261</span></td><td>Pyrophoriques / Contact eau</td><td>S'enflamme à l'air ou au contact de l'eau</td></tr>
-                        <tr><td><span class="code-badge">H300, H310, H330, H331</span></td><td>Toxicité aiguë cat. 1-3</td><td>Mortel ou toxique par ingestion/contact/inhalation</td></tr>
-                        <tr><td><span class="code-badge">H370</span></td><td>STOT exposition unique cat. 1</td><td>Risque avéré d'effets graves pour les organes</td></tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H200</span><span class="code-badge">H201</span><span class="code-badge">H202</span>
+                                <span class="code-badge">H203</span><span class="code-badge">H204</span><span class="code-badge">H205</span>
+                            </td>
+                            <td>Explosibles instables ou cat. 1.1 à 1.5</td>
+                            <td>Dangers d'explosion, de projection ou d'incendie en masse</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H220</span><span class="code-badge">H221</span>
+                                <span class="code-badge">H230</span><span class="code-badge">H231</span>
+                            </td>
+                            <td>Gaz inflammables cat. 1 & 2 et gaz instables</td>
+                            <td>Gaz extrêmement / très inflammable ou chimiquement instables</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-badge">H270</span></td>
+                            <td>Gaz comburants cat. 1</td>
+                            <td>Peut provoquer ou aggraver un incendie</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H224</span><span class="code-badge">H225</span>
+                            </td>
+                            <td>Liquides inflammables cat. 1 & 2</td>
+                            <td>Liquide et vapeurs extrêmement ou très inflammables</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-badge">H226</span></td>
+                            <td>Liquides inflammables cat. 3 (si TS &gt; point d'éclair)</td>
+                            <td>Liquide et vapeurs inflammables (si maintenu au-dessus de son point d'éclair)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-badge">H228</span></td>
+                            <td>Matières solides inflammables cat. 1 & 2</td>
+                            <td>Matière solide facilement inflammable</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H240</span><span class="code-badge">H241</span><span class="code-badge">H242</span>
+                            </td>
+                            <td>Substances autoréactives (types A à D) / Peroxydes organiques</td>
+                            <td>Peut exploser ou s'enflammer sous l'effet de la chaleur</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-badge">H250</span></td>
+                            <td>Liquides et solides pyrophoriques cat. 1</td>
+                            <td>S'enflamme spontanément au contact de l'air</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H260</span><span class="code-badge">H261</span>
+                            </td>
+                            <td>Substances dégageant des gaz inflammables au contact de l'eau</td>
+                            <td>Dégage des gaz inflammables (spontanément ou non) au contact de l'eau</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H271</span><span class="code-badge">H272</span>
+                            </td>
+                            <td>Liquides et solides comburants cat. 1 & 2</td>
+                            <td>Peut provoquer, aggraver un incendie ou causer une explosion</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="code-badge">H300</span><span class="code-badge">H310</span>
+                                <span class="code-badge">H330</span><span class="code-badge">H331</span>
+                            </td>
+                            <td>Toxicité aiguë cat. 1, 2 & 3 (voie orale, cutanée, inhalation)</td>
+                            <td>Mortel ou toxique par ingestion, contact cutané ou inhalation</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-badge">H370</span></td>
+                            <td>Toxicité spécifique pour certains organes cibles - Exposition unique (STOT SE) cat. 1</td>
+                            <td>Risque avéré d'effets graves pour les organes</td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Nota en bas de page -->
+            <div class="footer-note">
+                📖 Source : Fiche CLAP X003 (version 1, acceptée le 11/03/2015) - AFNOR Normalisation et UNM<br>
+                Basé sur l'Article 13 de la Directive 2014/68/UE et le Règlement CLP (CE) n° 1272/2008.
             </div>
         </div>
     </div>
 
-    <script>
+<script>
         let codesH = [];
         let substanceName = '';
         let substancesDB = [];
@@ -752,11 +815,10 @@
 
             codesH = [];
             updateCodesDisplay();
+            buildAutocomplete("");
         }
 
         function updateCAS() {
-            resetInputs();
-            
             const rawValue = document.getElementById("substanceName").value;
             const value = rawValue.trim().toUpperCase();
             substanceName = rawValue.trim();
@@ -766,8 +828,8 @@
             if (selectedSubstance) {
                 document.getElementById("casNumber").value = selectedSubstance.cas;
             } else {
-                buildAutocomplete(substanceName);
                 document.getElementById("casNumber").value = "";
+                buildAutocomplete(substanceName);
             }
 
             analyzeAndDisplay();
@@ -999,6 +1061,19 @@
             analyzeAndDisplay();
         }
 
+        function checkH226Critical() {
+            const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
+            const tsValue = parseFloat(document.getElementById('tsInput').value);
+            return !isNaN(flashPoint) && !isNaN(tsValue) && (tsValue > flashPoint);
+        }
+
+        function isCodeGroupe1(code) {
+            if (code === 'H226') {
+                return checkH226Critical();
+            }
+            return codesGroupe1Set.has(code);
+        }
+
         function updateCodesDisplay() {
             const container = document.getElementById('codesContainer');
             if (codesH.length === 0) {
@@ -1007,15 +1082,31 @@
             }
 
             container.innerHTML = codesH.map(code => {
-                const isGroupe1 = codesGroupe1Set.has(code);
+                const isG1 = isCodeGroupe1(code);
                 return `
-                    <div class="code-h-tag" style="background: ${isGroupe1 ? 'var(--danger-color)' : 'var(--success-color)'};">
-                        <span>${isGroupe1 ? 'G1' : 'G2'}</span>
+                    <div class="code-h-tag" style="background: ${isG1 ? 'var(--danger-color)' : 'var(--success-color)'};">
+                        <span>${isG1 ? 'G1' : 'G2'}</span>
                         ${code}
                         <span class="remove-btn" onclick="removeCode('${code}')">✕</span>
                     </div>
                 `;
             }).join('');
+        }
+
+        function isTSRequired() {
+            const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
+            const hasH226 = codesH.includes('H226');
+            
+            // Vérifier si des codes intrinsèques au Groupe 1 sont présents (hors H226)
+            const hasOtherG1 = codesH.some(code => code !== 'H226' && codesGroupe1Set.has(code));
+            
+            // Requis si H226 est présent
+            if (hasH226) return true;
+            
+            // Requis si tous les codes sont Groupe 2 (aucun autre G1) ET qu'un Pt d'éclair est présent
+            if (!hasOtherG1 && !isNaN(flashPoint)) return true;
+            
+            return false;
         }
 
         function analyzeAndDisplay() {
@@ -1028,7 +1119,6 @@
             }
 
             const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
-            const boilingPoint = parseFloat(document.getElementById('boilingPointInput').value);
             const tsValue = parseFloat(document.getElementById('tsInput').value);
             const psatValue = parseFloat(document.getElementById('psatInput').value);
 
@@ -1043,24 +1133,38 @@
                 }
             }
 
-            const codesGroupe1Trouves = codesH.filter(code => codesGroupe1Set.has(code));
-            let groupe = codesGroupe1Trouves.length > 0 ? 1 : 2;
-            let forceGroup1ByTS = false;
+            const isH226Critical = checkH226Critical();
+            const tsMissing = isNaN(tsValue) && isTSRequired();
 
-            const isTSCritical = !isNaN(flashPoint) && !isNaN(tsValue) && (tsValue > flashPoint);
-            if (isTSCritical && groupe === 2) {
-                groupe = 1;
-                forceGroup1ByTS = true;
-            }
+            const codesGroupe1Trouves = codesH.filter(code => isCodeGroupe1(code));
+            const isGroupe1 = codesGroupe1Trouves.length > 0;
+            
+            let groupe = isGroupe1 ? 1 : 2;
 
-            const isGroupe1 = groupe === 1;
+            // Détermination du message de motif
+            let justificationHTML = '';
+            if (tsMissing) {
+                const reason = codesH.includes('H226') 
+                    ? "Présence de la mention H226" 
+                    : "Codes H relevant du Groupe 2 avec présence d'un point d'éclair";
+                justificationHTML = `<p style="color: var(--danger-color); font-weight: bold;">⚠️ Saisie de la température maximale admissible (TS) obligatoire (${reason}). Impossibilité d'évaluer le basculement TS &gt; Pt d'éclair (Note 1 CLAP X003).</p>`;
+            } else if (isH226Critical) {
+                justificationHTML = `<p>Forcé en <strong>GROUPE 1</strong> car TS (${tsValue}°C) &gt; Point d'éclair (${flashPoint}°C) [Note 1 Fiche CLAP X003 / DESP].</p>`;
+            } else if (isGroupe1) {
+                justificationHTML = `<p>Présence de code(s) H du Groupe 1 : <strong>${codesGroupe1Trouves.join(', ')}</strong></p>`;
+            } else {
+				const flashPointText = isNaN(flashPoint) ? '' : ' (et TS ≤ Point d\'éclair)';
+				justificationHTML = `<p>Aucun code H ne relève des critères du Groupe 1${flashPointText}. Classification en Groupe 2.</p>`;
+			}
 
             container.innerHTML = `
-                <div class="result-card groupe-${groupe}">
+                <div class="result-card ${tsMissing ? '' : 'groupe-' + groupe}" style="${tsMissing ? 'background: #fff3cd; border: 2px solid #ffebaa;' : ''}">
                     <div class="result-header">
-                        <div style="font-size:36px;">${isGroupe1 ? '🚨' : '✅'}</div>
+                        <div style="font-size:36px;">${tsMissing ? '⚠️' : (isGroupe1 ? '🚨' : '✅')}</div>
                         <div>
-                            <div class="result-title">GROUPE ${groupe}</div>
+                            <div class="result-title" style="${tsMissing ? 'color: #856404;' : ''}">
+                                ${tsMissing ? 'SAISIE DE TS REQUISE' : 'GROUPE ' + groupe}
+                            </div>
                             <div style="font-weight:600; color: var(--gray-700);">${substanceName}</div>
                         </div>
                     </div>
@@ -1068,27 +1172,32 @@
                     <div class="justification">
                         <p style="margin-bottom: 8px;"><strong>Évaluation de l'état du fluide (Article 13 §1) :</strong> ${stateText}</p>
                         <p><strong>Motif de classement :</strong></p>
-                        ${forceGroup1ByTS 
-                            ? `<p>Forcé en <strong>GROUPE 1</strong> car TS (${tsValue}°C) > Point d'éclair (${flashPoint}°C) [Note 1 Fiche CLAP X003 / DESP].</p>`
-                            : isGroupe1 
-                                ? `<p>Présence de code(s) H du Groupe 1 : <strong>${codesGroupe1Trouves.join(', ')}</strong></p>`
-                                : `<p>Aucun code H ne relève des critères du Groupe 1. Classification par défaut en Groupe 2.</p>`
-                        }
+                        ${justificationHTML}
                     </div>
 
                     <div style="margin-top: 15px;">
                         <strong style="font-size:14px; color: var(--gray-800);">Détail des mentions de danger (Codes H) :</strong>
                         <div style="margin-top: 10px;">
-                            ${codesH.map(code => `
+                            ${codesH.map(code => {
+                                const codeInG1 = isCodeGroupe1(code);
+                                let noteCode = '';
+                                if (code === 'H226') {
+                                    if (isNaN(tsValue)) {
+                                        noteCode = ' <em>(Saisie de TS requise pour évaluer le groupe)</em>';
+                                    } else {
+                                        noteCode = ` <em>(${isH226Critical ? 'TS > Pt d\'éclair → Groupe 1' : 'TS ≤ Pt d\'éclair → Groupe 2'})</em>`;
+                                    }
+                                }
+                                return `
                                 <div class="code-item">
-                                    <div class="code-status ${codesGroupe1Set.has(code) ? 'groupe1' : 'groupe2'}">
-                                        ${codesGroupe1Set.has(code) ? '1' : '2'}
+                                    <div class="code-status ${codeInG1 ? 'groupe1' : 'groupe2'}">
+                                        ${codeInG1 ? '1' : '2'}
                                     </div>
                                     <div>
-                                        <strong>${code}</strong> —${codesDescriptions[code] || 'Description CLP non renseignée'}
-                                    </div>
+										<strong>${code}</strong> — ${codesDescriptions[code] || 'Description CLP non renseignée'}${noteCode}
+									</div>
                                 </div>
-                            `).join('')}
+                            `}).join('')}
                         </div>
                     </div>
                 </div>
@@ -1096,25 +1205,24 @@
         }
 
         function exportToPDF() {
+            const tsValue = parseFloat(document.getElementById('tsInput').value);
+            if (isNaN(tsValue) && isTSRequired()) {
+                alert("⚠️ Veuillez renseigner la température maximale admissible (TS) avant d'exporter le rapport PDF.");
+                return;
+            }
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
             const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
             const boilingPoint = parseFloat(document.getElementById('boilingPointInput').value);
-            const tsValue = parseFloat(document.getElementById('tsInput').value);
             const psatValue = parseFloat(document.getElementById('psatInput').value);
 
-            const isTSCritical = !isNaN(flashPoint) && !isNaN(tsValue) && (tsValue > flashPoint);
+            const isH226Critical = checkH226Critical();
+            const codesGroupe1Trouves = codesH.filter(code => isCodeGroupe1(code));
+            const isGroupe1 = codesGroupe1Trouves.length > 0;
+            const groupe = isGroupe1 ? 1 : 2;
 
-            const codesGroupe1Trouves = codesH.filter(code => codesGroupe1Set.has(code));
-            let groupe = codesGroupe1Trouves.length > 0 ? 1 : 2;
-            let forceGroup1ByTS = false;
-            if (isTSCritical && groupe === 2) {
-                groupe = 1;
-                forceGroup1ByTS = true;
-            }
-
-            const isGroupe1 = groupe === 1;
             const primaryColor = [79, 70, 229];
             const dangerColor = [220, 38, 38];
             const successColor = [22, 163, 74];
@@ -1193,11 +1301,13 @@
             doc.setFontSize(8.5);
             doc.setFont(undefined, 'normal');
 
-            let justificationText = forceGroup1ByTS 
-                ? `La classification est forcée en GROUPE 1 en raison du cas particulier inflammable (Note 1 Fiche CLAP X003) : TS (${tsValue}°C) > point d'éclair (${flashPoint}°C).`
-                : (codesGroupe1Trouves.length > 0 
-                    ? `Classé en GROUPE 1 (Article 13 §1(a)) suite à la présence de code(s) H de danger listé(s) : ${codesGroupe1Trouves.join(', ')}.`
-                    : `Classé en GROUPE 2 (Article 13 §1(b)). Aucun code H n'appartient à la liste des dangers du Groupe 1.`);
+			const flashPointPdfText = isNaN(flashPoint) ? '' : ` et TS (${tsValue}°C) <= point d'éclair (${flashPoint}°C)`;
+
+			let justificationText = isH226Critical
+				? `La classification est forcée en GROUPE 1 en raison du cas particulier inflammable (Note 1 Fiche CLAP X003) : TS (${tsValue}°C) > point d'éclair (${flashPoint}°C).`
+				: (codesGroupe1Trouves.length > 0 
+					? `Classé en GROUPE 1 (Article 13 §1(a)) suite à la présence de code(s) H de danger listé(s) : ${codesGroupe1Trouves.join(', ')}.`
+					: `Classé en GROUPE 2 (Article 13 §1(b)). Aucun code H n'appartient à la liste des dangers du Groupe 1${flashPointPdfText}.`);
 
             const splitJustif = doc.splitTextToSize(justificationText, contentWidth);
             doc.text(splitJustif, margin, yPos);
@@ -1219,7 +1329,7 @@
 
             if (codesH.length > 0) {
                 codesH.forEach((code, index) => {
-                    const isGroupe1Code = codesGroupe1Set.has(code);
+                    const isG1 = isCodeGroupe1(code);
                     if (index % 2 === 0) {
                         doc.setFillColor(248, 248, 248);
                         doc.rect(margin, yPos, contentWidth, 5.5, 'F');
@@ -1235,8 +1345,8 @@
                     doc.text(descCut, margin + 25, yPos + 4);
 
                     doc.setFont(undefined, 'bold');
-                    doc.setTextColor(...(isGroupe1Code ? dangerColor : successColor));
-                    doc.text(isGroupe1Code ? 'GROUPE 1' : 'GROUPE 2', pageWidth - margin - 35, yPos + 4);
+                    doc.setTextColor(...(isG1 ? dangerColor : successColor));
+                    doc.text(isG1 ? 'GROUPE 1' : 'GROUPE 2', pageWidth - margin - 35, yPos + 4);
 
                     yPos += 5.5;
                 });
@@ -1264,6 +1374,23 @@
 
         window.addEventListener('load', async () => {
             await loadSubstances();
+            
+            const flashPointInput = document.getElementById('flashPointInput');
+            const tsInput = document.getElementById('tsInput');
+
+            if (flashPointInput) {
+                flashPointInput.addEventListener('input', () => {
+                    updateCodesDisplay();
+                    analyzeAndDisplay();
+                });
+            }
+
+            if (tsInput) {
+                tsInput.addEventListener('input', () => {
+                    updateCodesDisplay();
+                    analyzeAndDisplay();
+                });
+            }
         });
     </script>
 </body>
