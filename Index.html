@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classificateur de Fluides DESP 2014/68/UE - Article 13</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #4338ca;
+            --danger-color: #dc2626;
+            --danger-light: #fee2e2;
+            --success-color: #16a34a;
+            --success-light: #dcfce7;
+            --info-color: #2563eb;
+            --info-light: #eff6ff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        h1 {
+            color: var(--gray-900);
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .input-field:read-only {
+            background-color: var(--gray-100);
+            color: var(--gray-600);
+            cursor: not-allowed;
+        }
+
+        .input-help-text {
+            font-size: 11px;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+
+        .info-box {
+            background-color: var(--info-light);
+            border-left: 4px solid var(--info-color);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--gray-800);
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .codes-h-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+            min-height: 50px;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            border: 2px dashed var(--gray-300);
+        }
+
+        .code-h-tag {
+            padding: 6px 10px;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .code-h-tag .remove-btn {
+            cursor: pointer;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+
+        .code-h-tag .remove-btn:hover {
+            opacity: 1;
+        }
+
+        .add-code-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-code-container input {
+            flex: 1;
+        }
+
+        .result-card {
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .result-card.groupe-1 {
+            background: var(--danger-light);
+            border: 2px solid var(--danger-color);
+        }
+
+        .result-card.groupe-2 {
+            background: var(--success-light);
+            border: 2px solid var(--success-color);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .result-card.groupe-1 .result-title { color: var(--danger-color); }
+        .result-card.groupe-2 .result-title { color: var(--success-color); }
+
+        .justification {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .code-item {
+            padding: 10px 14px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .code-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .code-status.groupe1 { background: var(--danger-color); }
+        .code-status.groupe2 { background: var(--success-color); }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .reference-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        .reference-table th, .reference-table td {
+            padding: 10px;
+            text-align: left;
+            font-size: 13px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .reference-table th { background: var(--gray-100); }
+
+        .code-badge {
+            background: var(--danger-color);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-title">
+                <div class="header-icon">⚗️</div>
+                <div>
+                    <h1>Classificateur de Fluides DESP 2014/68/UE</h1>
+                    <p class="header-subtitle">Détermination directe Groupe 1 ou Groupe 2 selon l'Article 13</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="section-card">
+            <h2 class="section-title">🧪 Saisie de la substance et paramètres</h2>
+
+            <div class="grid-2">
+                <div>
+                    <div class="input-group">
+                        <label class="input-label">📝 Nom de la substance</label>
+                        <input type="text" id="substanceName" class="input-field" list="substancesList" placeholder="Ex : Acide borique, Propane..." oninput="updateCAS()">
+                        <datalist id="substancesList"></datalist>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">📌 Numéro CAS</label>
+                        <input type="text" id="casNumber" class="input-field" readonly style="background:#f3f4f6;">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="searchOnPubChem()" style="width: 100%; justify-content: center;">
+                        ⚡ Importer codes H & Point d'éclair (PubChem)
+                    </button>
+					
+					<!-- Nouveau conteneur pour le bouton PubChem (masqué par défaut) -->
+					<div id="pubchemLinkContainer" style="margin-top: 10px; display: none;">
+						<a id="pubchemBtn" href="#" target="_blank" class="btn btn-secondary" style="width: 100%; justify-content: center; text-decoration: none;">
+							🔗 Ouvrir la fiche PubChem
+						</a>
+					</div>
+					
+                </div>
+
+                <div>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="input-label">🌡️ Point d'Éclair (°C) <span style="font-weight:normal; font-size:12px; color:var(--gray-600);">(Optionnel)</span></label>
+                            <input type="number" id="flashPointInput" class="input-field" step="any" placeholder="N/A" readonly oninput="analyzeAndDisplay()">
+                            <p class="input-help-text" id="flashPointStatus">🔒 Champ grisé : aucune donnée extraite de PubChem.</p>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">🌡️ Temp. Max (TS) (°C) <span style="font-weight:normal; font-size:12px; color:var(--gray-600);">(Optionnel)</span></label>
+                            <input type="number" id="tsInput" class="input-field" step="any" placeholder="Ex: 250" oninput="analyzeAndDisplay()">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">🏷️ Mentions de Danger (Codes H)</label>
+                        <div class="codes-h-container" id="codesContainer">
+                            <span style="color: var(--gray-500); font-size: 13px;">Aucun code H configuré</span>
+                        </div>
+                        <div class="add-code-container">
+                            <input type="text" id="codeHInput" class="input-field" placeholder="Coller ou saisir (ex: H220, H314)" onkeypress="if(event.key === 'Enter') addCodeH()">
+                            <button class="btn btn-secondary" onclick="addCodeH()">➕ Ajouter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                ℹ️ <strong>Règle spécifique des liquides inflammables (Fiche CLAP X003 / DESP) :</strong> La saisie du <em>Point d'éclair</em> et de la <em>Température Maximale Admissible (TS)</em> est optionnelle. Si la température maximale d'utilisation du fluide <strong>TS est supérieure au point d'éclair</strong> de la substance, le liquide est considéré comme dangereux et bascule automatiquement en <strong>Groupe 1</strong>, même si ses mentions H le classeraient par défaut en Groupe 2.
+            </div>
+        </div>
+
+        <!-- Résultats -->
+        <div class="section-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="section-title" style="margin-bottom:0;">📊 Résultat de l'analyse DESP</h2>
+                <button class="btn btn-primary" onclick="exportToPDF()">📄 Exporter en PDF (Page Unique)</button>
+            </div>
+
+            <div id="resultContainer">
+                <p style="color: var(--gray-600); font-size: 14px;">Sélectionnez une substance ou saisissez des codes H pour afficher le groupe DESP.</p>
+            </div>
+        </div>
+
+        <!-- Référence Réglementaire -->
+        <div class="section-card">
+            <h2 class="section-title">📚 Critères Groupe 1 (Article 13 DESP)</h2>
+            <div class="table-responsive">
+                <table class="reference-table">
+                    <thead>
+                        <tr>
+                            <th>Code H</th>
+                            <th>Catégorie de danger (Article 13 DESP)</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="code-badge">H200-H205</span></td><td>Explosibles instables</td><td>Dangers d'explosion, projection, incendie</td></tr>
+                        <tr><td><span class="code-badge">H220, H221, H230, H231</span></td><td>Gaz inflammables cat. 1-2</td><td>Gaz extrêmement/très inflammable</td></tr>
+                        <tr><td><span class="code-badge">H270</span></td><td>Gaz comburants cat. 1</td><td>Peut provoquer ou aggraver un incendie</td></tr>
+                        <tr><td><span class="code-badge">H224, H225</span></td><td>Liquides inflammables cat. 1-2</td><td>Liquide et vapeurs très/extrêmement inflammables</td></tr>
+                        <tr><td><span class="code-badge">H226</span></td><td>Liquides infl. cat. 3 (si TS > point d'éclair)</td><td>Liquide et vapeurs inflammables</td></tr>
+                        <tr><td><span class="code-badge">H240-H242</span></td><td>Substances autoréactives / Peroxydes</td><td>Peut s'enflammer/exploser sous la chaleur</td></tr>
+                        <tr><td><span class="code-badge">H250, H260, H261</span></td><td>Pyrophoriques / Contact eau</td><td>S'enflamme à l'air ou au contact de l'eau</td></tr>
+                        <tr><td><span class="code-badge">H300, H310, H330, H331</span></td><td>Toxicité aiguë cat. 1-3</td><td>Mortel ou toxique par ingestion/contact/inhalation</td></tr>
+                        <tr><td><span class="code-badge">H370</span></td><td>STOT exposition unique cat. 1</td><td>Risque avéré d'effets graves pour les organes</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let codesH = [];
+        let substanceName = '';
+        let substancesDB = [];
+        let selectedSubstance = null;
+
+        // Codes H Groupe 1 selon Article 13 DESP 2014/68/UE
+        const codesGroupe1Set = new Set([
+            'H200', 'H201', 'H202', 'H203', 'H204', 'H205', // (i) Explosifs
+            'H220', 'H221', 'H230', 'H231', // (ii) Gaz inflammables/instables
+            'H270', // (iii) Gaz comburant
+            'H224', 'H225', // (iv) Liquides inflammables 1-2
+            'H226', // (v) Liquides inflammables 3
+            'H228', // (vi) Solides inflammables
+            'H240', 'H241', 'H242', // (vii) Autoréactifs / (xiii) Peroxydes
+            'H250', // (viii)-(ix) Pyrophoriques
+            'H260', 'H261', // (x) Dégage gaz inflammables au contact de l'eau
+            'H271', 'H272', // (xi)-(xii) Liquides/Solides comburants
+            'H300', // (xiv) Toxicité aiguë orale 1-2
+            'H310', // (xv) Toxicité aiguë cutanée 1-2
+            'H330', 'H331', // (xvi) Toxicité aiguë inhalation 1-3
+            'H370' // (xvii) STOT exposition unique 1
+        ]);
+
+        const codesDescriptions = {
+            // DANGERS PHYSIQUES
+            'H200': 'Explosif instable',
+            'H201': 'Explosif ; danger d\'explosion en masse',
+            'H202': 'Explosif ; grave danger de projection',
+            'H203': 'Explosif ; danger d\'incendie, d\'effet de souffle ou de projection',
+            'H204': 'Danger d\'incendie ou de projection',
+            'H205': 'Danger d\'explosion en masse en cas d\'incendie',
+            'H220': 'Gaz extrêmement inflammable',
+            'H221': 'Gaz inflammable',
+            'H222': 'Aérosol extrêmement inflammable',
+            'H223': 'Aérosol inflammable',
+            'H224': 'Liquide et vapeurs extrêmement inflammables',
+            'H225': 'Liquide et vapeurs très inflammables',
+            'H226': 'Liquide et vapeurs inflammables',
+            'H228': 'Matière solide inflammable',
+            'H229': 'Récipient sous pression: peut éclater sous l\'effet de la chaleur',
+            'H230': 'Peut réagir de manière explosive même en l\'absence d\'air',
+            'H231': 'Peut réagir de manière explosive même en l\'absence d\'air à pression et/ou température élevée',
+            'H240': 'Peut exploser sous l\'effet de la chaleur',
+            'H241': 'Peut s\'enflammer ou exploser sous l\'effet de la chaleur',
+            'H242': 'Peut s\'enflammer sous l\'effet de la chaleur',
+            'H250': 'S\'enflamme spontanément au contact de l\'air',
+            'H251': 'Matière auto-échauffante; peut s\'enflammer',
+            'H252': 'Matière auto-échauffante en grandes quantités; peut s\'enflammer',
+            'H260': 'Dégage au contact de l\'eau des gaz inflammables qui peuvent s\'enflammer spontanément',
+            'H261': 'Dégage au contact de l\'eau des gaz inflammables',
+            'H270': 'Peut provoquer ou aggraver un incendie; comburant',
+            'H271': 'Peut provoquer un incendie ou une explosion; comburant puissant',
+            'H272': 'Peut aggraver un incendie; comburant',
+            'H280': 'Contient un gaz sous pression; peut exploser sous l\'effet de la chaleur',
+            'H281': 'Contient un gaz réfrigéré; peut causer des brûlures ou blessures cryogéniques',
+            'H290': 'Peut être corrosif pour les métaux',
+
+            // DANGERS POUR LA SANTÉ
+            'H300': 'Mortel en cas d\'ingestion',
+            'H301': 'Toxique en cas d\'ingestion',
+            'H302': 'Nocif en cas d\'ingestion',
+            'H304': 'Peut être mortel en cas d\'ingestion et de pénétration dans les voies respiratoires',
+            'H310': 'Mortel par contact cutané',
+            'H311': 'Toxique par contact cutané',
+            'H312': 'Nocif par contact cutané',
+            'H314': 'Provoque de graves brûlures de la peau et de graves lésions des yeux',
+            'H315': 'Provoque une irritation cutanée',
+            'H317': 'Peut provoquer une allergie cutanée',
+            'H318': 'Provoque de graves lésions des yeux',
+            'H319': 'Provoque une sévère irritation des yeux',
+            'H330': 'Mortel par inhalation',
+            'H331': 'Toxique par inhalation',
+            'H332': 'Nocif par inhalation',
+            'H334': 'Peut provoquer des symptômes allergiques ou d\'asthme ou des difficultés respiratoires par inhalation',
+            'H335': 'Peut irriter les voies respiratoires',
+            'H336': 'Peut provoquer somnolence ou vertiges',
+            'H340': 'Peut induire des anomalies génétiques',
+            'H341': 'Susceptible d\'induire des anomalies génétiques',
+            'H350': 'Peut provoquer le cancer',
+            'H350i': 'Peut provoquer le cancer par inhalation',
+            'H351': 'Susceptible de provoquer le cancer',
+            'H360': 'Peut nuire à la fertilité ou au fœtus',
+            'H360F': 'Peut nuire à la fertilité',
+            'H360D': 'Peut nuire au fœtus',
+            'H360FD': 'Peut nuire à la fertilité. Peut nuire au fœtus',
+            'H360Fd': 'Peut nuire à la fertilité. Susceptible de nuire au fœtus',
+            'H360Df': 'Peut nuire au fœtus. Susceptible de nuire à la fertilité',
+            'H361': 'Susceptible de nuire à la fertilité ou au fœtus',
+            'H361f': 'Susceptible de nuire à la fertilité',
+            'H361d': 'Susceptible de nuire au fœtus',
+            'H361fd': 'Susceptible de nuire à la fertilité. Susceptible de nuire au fœtus',
+            'H362': 'Peut être nocif pour les bébés nourris au lait maternel',
+            'H370': 'Risque avéré d\'effets graves pour les organes',
+            'H371': 'Risque présumé d\'effets graves pour les organes',
+            'H372': 'Risque avéré d\'effets graves pour les organes à la suite d\'expositions répétées ou d\'une exposition prolongée',
+            'H373': 'Risque présumé d\'effets graves pour les organes à la suite d\'expositions répétées ou d\'une exposition prolongée',
+
+            // DANGERS POUR L'ENVIRONNEMENT
+            'H400': 'Très toxique pour les organismes aquatiques',
+            'H410': 'Très toxique pour les organismes aquatiques, entraîne des effets néfastes à long terme',
+            'H411': 'Toxique pour les organismes aquatiques, entraîne des effets néfastes à long terme',
+            'H412': 'Nocif pour les organismes aquatiques, entraîne des effets néfastes à long terme',
+            'H413': 'Peut être nocif à long terme pour les organismes aquatiques',
+            'H420': 'Nuit à la santé publique et à l\'environnement en détruisant l\'ozone dans la haute atmosphère'
+        };
+
+        async function loadSubstances() {
+            try {
+                const response = await fetch('substances-search.csv');
+                const csvText = await response.text();
+                const lines = csvText.split(/\r?\n/);
+                substancesDB = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].split(";");
+                    if (cols.length < 2) continue;
+                    const nom = cols[0].replaceAll('"', '').trim();
+                    const cas = cols[1].replaceAll('"', '').trim();
+                    if (nom && cas) substancesDB.push({ nom, cas });
+                }
+                buildAutocomplete();
+            } catch (err) {
+                console.error("Erreur de chargement du fichier CSV :", err);
+            }
+        }
+
+function buildAutocomplete(filterText = "") {
+    const list = document.getElementById("substancesList");
+    list.innerHTML = "";
+
+    let items = substancesDB;
+
+    if (filterText) {
+        const query = filterText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Gestion des accents
+
+        // Filtre et tri par pertinence
+        items = substancesDB
+            .filter(s => {
+                const name = s.nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return name.includes(query);
+            })
+            .sort((a, b) => {
+                const nameA = a.nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const nameB = b.nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                const startsA = nameA.startsWith(query);
+                const startsB = nameB.startsWith(query);
+
+                // Priorité 1 : Ceux qui commencent par la recherche
+                if (startsA && !startsB) return -1;
+                if (!startsA && startsB) return 1;
+
+                // Priorité 2 : Ordre alphabétique standard
+                return nameA.localeCompare(nameB, 'fr');
+            })
+            .slice(0, 50); // Limite aux 50 premiers résultats pour garder une interface fluide
+    }
+
+    items.forEach(substance => {
+        const option = document.createElement("option");
+        option.value = substance.nom;
+        list.appendChild(option);
+    });
+}
+
+        function resetInputs() {
+			const fpInput = document.getElementById('flashPointInput');
+			const fpStatus = document.getElementById('flashPointStatus');
+    
+			fpInput.value = '';
+			fpInput.readOnly = true;
+			fpInput.placeholder = 'N/A';
+			fpStatus.innerHTML = '🔒 Champ grisé : aucune donnée extraite de PubChem.';
+    
+			// Masquer le bouton PubChem
+			const pubchemContainer = document.getElementById('pubchemLinkContainer');
+			if (pubchemContainer) pubchemContainer.style.display = 'none';
+
+			document.getElementById('tsInput').value = '';
+			codesH = [];
+			updateCodesDisplay();
+		}
+
+function updateCAS() {
+    resetInputs();
+    
+    const rawValue = document.getElementById("substanceName").value;
+    const value = rawValue.trim().toUpperCase();
+    substanceName = rawValue.trim();
+
+    // 1. On cherche d'abord si la valeur saisie correspond EXACTEMENT à une substance
+    selectedSubstance = substancesDB.find(s => s.nom.toUpperCase().trim() === value);
+
+    if (selectedSubstance) {
+        // Si la substance est trouvée (clic dans la liste), on renseigne le CAS 
+        // sans détruire/reconstruire la datalist !
+        document.getElementById("casNumber").value = selectedSubstance.cas;
+    } else {
+        // Si l'utilisateur est encore en train de taper un texte partiel,
+        // on met à jour la datalist de suggestions
+        buildAutocomplete(substanceName);
+        document.getElementById("casNumber").value = "";
+    }
+
+    analyzeAndDisplay();
+}
+
+        function parseFlashPointsFromPubChem(data) {
+            let foundValues = [];
+
+            function traverse(node) {
+                if (!node) return;
+                if (node.TOCHeading === "Flash Point" && node.Information) {
+                    node.Information.forEach(info => {
+                        let text = "";
+                        if (info.Value?.StringWithMarkup) {
+                            text = info.Value.StringWithMarkup.map(s => s.String).join(" ");
+                        } else if (info.Value?.Number) {
+                            text = info.Value.Number.join(" ") + " " + (info.Value.Unit || "");
+                        }
+
+                        if (text) {
+                            const matchC = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*C\b/i);
+                            if (matchC) {
+                                foundValues.push(parseFloat(matchC[1]));
+                            } else {
+                                const matchF = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*F\b/i);
+                                if (matchF) {
+                                    const valF = parseFloat(matchF[1]);
+                                    const valC = (valF - 32) * (5 / 9);
+                                    foundValues.push(valC);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if (node.Section) {
+                    node.Section.forEach(child => traverse(child));
+                }
+            }
+
+            if (data.Record?.Section) {
+                data.Record.Section.forEach(s => traverse(s));
+            }
+
+            if (foundValues.length > 0) {
+                const minVal = Math.min(...foundValues);
+                return Math.round(minVal * 10) / 10;
+            }
+            return null;
+        }
+
+        async function searchOnPubChem() {
+            const casNumber = document.getElementById("casNumber").value;
+            if (!casNumber) {
+                alert("⚠️ Veuillez sélectionner une substance avec un numéro CAS valide.");
+                return;
+            }
+
+            resetInputs();
+
+            try {
+                const cidRes = await fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(casNumber)}/cids/JSON`);
+                if (!cidRes.ok) throw new Error("Substance introuvable sur PubChem.");
+                const cidData = await cidRes.json();
+                const cid = cidData.IdentifierList.CID[0];
+
+				// --- NOUVEAU : Affichage du bouton vers la page PubChem ---
+				const pubchemBtn = document.getElementById('pubchemBtn');
+				const pubchemContainer = document.getElementById('pubchemLinkContainer');
+				if (pubchemBtn && pubchemContainer) {
+					pubchemBtn.href = `https://pubchem.ncbi.nlm.nih.gov/compound/${cid}`;
+					pubchemContainer.style.display = 'block';
+				}
+
+                // Codes H (GHS)
+                const ghsRes = await fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${cid}/JSON?heading=GHS+Classification`);
+                if (ghsRes.ok) {
+                    const ghsData = await ghsRes.json();
+                    const section = ghsData.Record?.Section?.[0]?.Section?.[0]?.Section?.[0];
+                    const information = section?.Information || [];
+
+                    let echaInfo = information.find(item => item.Name === "GHS Hazard Statements" && item.Description?.includes("ECHA")) || information.find(item => item.Name === "GHS Hazard Statements");
+
+                    const codesFound = new Set();
+                    const extractCode = (str) => {
+                        const match = str.match(/\b[Hh]\d{3}[A-Za-z]*\b/);
+                        return match ? 'H' + match[0].substring(1) : null;
+                    };
+
+                    if (echaInfo?.Value?.StringWithMarkup) {
+                        echaInfo.Value.StringWithMarkup.forEach(item => {
+                            const code = extractCode(item.String);
+                            if (code) codesFound.add(code);
+                        });
+                    }
+
+                    if (codesFound.size > 0) {
+                        codesH = Array.from(codesFound);
+                        updateCodesDisplay();
+                    }
+                }
+
+                // Point d'éclair
+                const fpRes = await fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${cid}/JSON?heading=Flash+Point`);
+                const fpInput = document.getElementById('flashPointInput');
+                const fpStatus = document.getElementById('flashPointStatus');
+
+                if (fpRes.ok) {
+                    const fpData = await fpRes.json();
+                    const minFlashPoint = parseFlashPointsFromPubChem(fpData);
+                    if (minFlashPoint !== null) {
+                        fpInput.value = minFlashPoint;
+                        fpInput.readOnly = false;
+                        fpStatus.innerHTML = '✅ Valeur importée de PubChem (modifiable).';
+                    } else {
+                        fpStatus.innerHTML = '🔒 Non disponible sur PubChem (saisie désactivée).';
+                    }
+                } else {
+                    fpStatus.innerHTML = '🔒 Non disponible sur PubChem (saisie désactivée).';
+                }
+
+                analyzeAndDisplay();
+            } catch (err) {
+                alert(`❌ Erreur : ${err.message}`);
+            }
+        }
+
+        function addCodeH() {
+            const input = document.getElementById('codeHInput');
+            const textToProcess = input.value.trim();
+            if (!textToProcess) return;
+
+            const matches = textToProcess.match(/[Hh]\d{3}[A-Za-z]*/g);
+            if (matches) {
+                matches.forEach(rawCode => {
+                    let code = 'H' + rawCode.substring(1);
+                    if (!codesH.includes(code)) codesH.push(code);
+                });
+            }
+            input.value = '';
+            updateCodesDisplay();
+            analyzeAndDisplay();
+        }
+
+        function removeCode(code) {
+            codesH = codesH.filter(c => c !== code);
+            updateCodesDisplay();
+            analyzeAndDisplay();
+        }
+
+        function updateCodesDisplay() {
+            const container = document.getElementById('codesContainer');
+            if (codesH.length === 0) {
+                container.innerHTML = '<span style="color: var(--gray-500); font-size: 13px;">Aucun code H configuré</span>';
+                return;
+            }
+
+            container.innerHTML = codesH.map(code => {
+                const isGroupe1 = codesGroupe1Set.has(code);
+                return `
+                    <div class="code-h-tag" style="background: ${isGroupe1 ? 'var(--danger-color)' : 'var(--success-color)'};">
+                        <span>${isGroupe1 ? 'G1' : 'G2'}</span>
+                        ${code}
+                        <span class="remove-btn" onclick="removeCode('${code}')">✕</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function analyzeAndDisplay() {
+            const container = document.getElementById('resultContainer');
+            substanceName = document.getElementById('substanceName').value.trim() || 'Substance non spécifiée';
+            
+            if (codesH.length === 0) {
+                container.innerHTML = `<p style="color: var(--gray-600); font-size: 14px;">Spécifiez des codes H pour recalculer le groupe de <strong>${substanceName}</strong>.</p>`;
+                return;
+            }
+
+            const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
+            const tsValue = parseFloat(document.getElementById('tsInput').value);
+
+            const codesGroupe1Trouves = codesH.filter(code => codesGroupe1Set.has(code));
+            let groupe = codesGroupe1Trouves.length > 0 ? 1 : 2;
+            let forceGroup1ByTS = false;
+
+            const isTSCritical = !isNaN(flashPoint) && !isNaN(tsValue) && (tsValue > flashPoint);
+            if (isTSCritical && groupe === 2) {
+                groupe = 1;
+                forceGroup1ByTS = true;
+            }
+
+            const isGroupe1 = groupe === 1;
+
+            container.innerHTML = `
+                <div class="result-card groupe-${groupe}">
+                    <div class="result-header">
+                        <div style="font-size:36px;">${isGroupe1 ? '🚨' : '✅'}</div>
+                        <div>
+                            <div class="result-title">GROUPE ${groupe}</div>
+                            <div style="font-weight:600; color: var(--gray-700);">${substanceName}</div>
+                        </div>
+                    </div>
+
+                    <div class="justification">
+                        <p><strong>Motif de classement :</strong></p>
+                        ${forceGroup1ByTS 
+                            ? `<p>Forcé en <strong>GROUPE 1</strong> car TS (${tsValue}°C) > Point d'éclair (${flashPoint}°C) [Note 1 Fiche CLAP X003 / DESP].</p>`
+                            : isGroupe1 
+                                ? `<p>Présence de code(s) H du Groupe 1 : <strong>${codesGroupe1Trouves.join(', ')}</strong></p>`
+                                : `<p>Aucun code H ne relève des critères du Groupe 1. Classification par défaut en Groupe 2.</p>`
+                        }
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <strong style="font-size:14px; color: var(--gray-800);">Détail des mentions de danger (Codes H) :</strong>
+                        <div style="margin-top: 10px;">
+                            ${codesH.map(code => `
+                                <div class="code-item">
+                                    <div class="code-status ${codesGroupe1Set.has(code) ? 'groupe1' : 'groupe2'}">
+                                        ${codesGroupe1Set.has(code) ? '1' : '2'}
+                                    </div>
+                                    <div>
+                                        <strong>${code}</strong> —${codesDescriptions[code] || 'Description CLP non renseignée'}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
+            const tsValue = parseFloat(document.getElementById('tsInput').value);
+            const isTSCritical = !isNaN(flashPoint) && !isNaN(tsValue) && (tsValue > flashPoint);
+
+            const codesGroupe1Trouves = codesH.filter(code => codesGroupe1Set.has(code));
+            let groupe = codesGroupe1Trouves.length > 0 ? 1 : 2;
+            let forceGroup1ByTS = false;
+            if (isTSCritical && groupe === 2) {
+                groupe = 1;
+                forceGroup1ByTS = true;
+            }
+
+            const isGroupe1 = groupe === 1;
+            const primaryColor = [79, 70, 229];
+            const dangerColor = [220, 38, 38];
+            const successColor = [22, 163, 74];
+            const grayColor = [107, 114, 128];
+            const lightGray = [243, 244, 246];
+
+            const pageWidth = doc.internal.pageSize.width;
+            const margin = 15;
+            const contentWidth = pageWidth - 2 * margin;
+            let yPos = 0;
+
+            doc.setFillColor(...primaryColor);
+            doc.rect(0, 0, pageWidth, 24, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('RAPPORT DE CLASSIFICATION DESP', margin, 12);
+
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+            doc.text('Directive 2014/68/UE - Article 13', margin, 18);
+
+            const casVal = document.getElementById("casNumber").value || 'Non renseigné';
+            const dateAnalyse = new Date().toLocaleDateString('fr-FR', { 
+                year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+            });
+            doc.text(`Date : ${dateAnalyse}`, pageWidth - margin - 45, 18);
+
+            yPos = 30;
+
+            doc.setFillColor(...lightGray);
+            doc.rect(margin, yPos, contentWidth, 18, 'F');
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Substance : ${substanceName || 'Non spécifiée'}`, margin + 4, yPos + 7);
+            doc.setFont(undefined, 'normal');
+            doc.text(`CAS : ${casVal}`, margin + 4, yPos + 13);
+
+            doc.setFontSize(8.5);
+            doc.setTextColor(...grayColor);
+            doc.text(`Point d'Éclair : ${isNaN(flashPoint) ? 'N/A' : flashPoint + ' °C'}`, pageWidth / 2 + 10, yPos + 7);
+            doc.text(`Temp. Max. Admissible (TS) : ${isNaN(tsValue) ? 'N/A' : tsValue + ' °C'}`, pageWidth / 2 + 10, yPos + 13);
+
+            yPos += 22;
+
+            doc.setFillColor(...(isGroupe1 ? dangerColor : successColor));
+            doc.roundedRect(margin, yPos, contentWidth, 18, 2, 2, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.setFont(undefined, 'bold');
+            doc.text(`GROUPE ${groupe}`, margin + 6, yPos + 12);
+
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+            doc.text(isGroupe1 ? 'Fluide Dangereux — Article 13 §1(a)' : 'Autre Fluide — Article 13 §1(b)', margin + 50, yPos + 11);
+
+            yPos += 24;
+
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0, 0, 0);
+            doc.text('JUSTIFICATION RÉGLEMENTAIRE', margin, yPos);
+            yPos += 5;
+
+            doc.setFontSize(8.5);
+            doc.setFont(undefined, 'normal');
+
+            let justificationText = forceGroup1ByTS 
+                ? `La classification est forcée en GROUPE 1 en raison du cas particulier inflammable (Note 1 Fiche CLAP X003) : TS (${tsValue}°C) > point d'éclair (${flashPoint}°C).`
+                : (codesGroupe1Trouves.length > 0 
+                    ? `Classé en GROUPE 1 (Article 13 §1(a)) suite à la présence de code(s) H de danger listé(s) : ${codesGroupe1Trouves.join(', ')}.`
+                    : `Classé en GROUPE 2 (Article 13 §1(b)). Aucun code H n'appartient à la liste des dangers du Groupe 1.`);
+
+            const splitJustif = doc.splitTextToSize(justificationText, contentWidth);
+            doc.text(splitJustif, margin, yPos);
+            yPos += (splitJustif.length * 4) + 6;
+
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'bold');
+            doc.text('MENTIONS DE DANGER IDENTIFIÉES (CODES H)', margin, yPos);
+            yPos += 5;
+
+            doc.setFillColor(220, 220, 220);
+            doc.rect(margin, yPos, contentWidth, 6, 'F');
+            doc.setFontSize(8);
+            doc.setTextColor(0, 0, 0);
+            doc.text('Code H', margin + 3, yPos + 4);
+            doc.text('Description / Libellé CLP', margin + 25, yPos + 4);
+            doc.text('Impact Groupe DESP', pageWidth - margin - 35, yPos + 4);
+            yPos += 6;
+
+            if (codesH.length > 0) {
+                codesH.forEach((code, index) => {
+                    const isGroupe1Code = codesGroupe1Set.has(code);
+                    if (index % 2 === 0) {
+                        doc.setFillColor(248, 248, 248);
+                        doc.rect(margin, yPos, contentWidth, 5.5, 'F');
+                    }
+
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(8);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(code, margin + 3, yPos + 4);
+
+                    doc.setFont(undefined, 'normal');
+                    const descCut = doc.splitTextToSize(codesDescriptions[code] || 'Description non renseignée', contentWidth - 65)[0];
+                    doc.text(descCut, margin + 25, yPos + 4);
+
+                    doc.setFont(undefined, 'bold');
+                    doc.setTextColor(...(isGroupe1Code ? dangerColor : successColor));
+                    doc.text(isGroupe1Code ? 'GROUPE 1' : 'GROUPE 2', pageWidth - margin - 35, yPos + 4);
+
+                    yPos += 5.5;
+                });
+            } else {
+                doc.setFontSize(8);
+                doc.setFont(undefined, 'italic');
+                doc.setTextColor(...grayColor);
+                doc.text('Aucune mention de danger spécifiée.', margin + 3, yPos + 4);
+                yPos += 6;
+            }
+
+            const footerY = 278;
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, footerY - 2, pageWidth - margin, footerY - 2);
+
+            doc.setFontSize(7.5);
+            doc.setTextColor(...grayColor);
+            doc.setFont(undefined, 'italic');
+            doc.text('Sources : Directive 2014/68/UE (DESP) • Règlement (CE) n° 1272/2008 (CLP) • Fiche CLAP X003', margin, footerY + 2);
+            doc.text('Page 1 / 1', pageWidth - margin - 15, footerY + 2);
+
+            const fileName = `Classification_DESP_${(substanceName || 'Substance').replace(/[^a-z0-9]/gi, '_')}_Groupe${groupe}.pdf`;
+            doc.save(fileName);
+        }
+
+        window.addEventListener('load', async () => {
+            await loadSubstances();
+        });
+    </script>
+</body>
+</html>
