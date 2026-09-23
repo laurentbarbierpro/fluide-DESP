@@ -1033,10 +1033,24 @@
 
                 recalculatePsat();
                 analyzeAndDisplay();
-            } catch (err) {
-                alert(`❌ Erreur : ${err.message}`);
+} catch (err) {
+        // 2. Gestion de l'erreur PubChem -> Bascule vers INERIS
+        if (err.message.includes("Substance introuvable sur PubChem")) {
+            const inerisUrl = `https://substances.ineris.fr/recherche-substances?cas=${encodeURIComponent(casNumber)}`;
+            
+            const reponse = confirm(
+                `❌ Substance non trouvée sur PubChem.\n\nSouhaitez-vous rechercher le numéro CAS (${casNumber}) directement sur le portail de l'INERIS ?`
+            );
+
+            if (reponse) {
+                // Ouvre la recherche INERIS dans un nouvel onglet
+                window.open(inerisUrl, '_blank');
             }
+        } else {
+            alert(`❌ Erreur lors de la recherche : ${err.message}`);
         }
+    }
+}
 
         function addCodeH() {
             const input = document.getElementById('codeHInput');
