@@ -1069,6 +1069,8 @@
             analyzeAndDisplay();
         }
 
+
+
         function removeCode(code) {
             codesH = codesH.filter(c => c !== code);
             updateCodesDisplay();
@@ -1080,6 +1082,18 @@
             const tsValue = parseFloat(document.getElementById('tsInput').value);
             return !isNaN(flashPoint) && !isNaN(tsValue) && (tsValue > flashPoint);
         }
+		
+function isFlashPointCritical() {
+    const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
+    const tsValue = parseFloat(document.getElementById('tsInput').value);
+
+    return (
+        !isNaN(flashPoint) &&
+        !isNaN(tsValue) &&
+        tsValue > flashPoint
+    );
+}
+
 
         function isCodeGroupe1(code) {
             if (code === 'H226') {
@@ -1107,21 +1121,37 @@
             }).join('');
         }
 
-        function isTSRequired() {
-            const flashPoint = parseFloat(document.getElementById('flashPointInput').value);
-            const hasH226 = codesH.includes('H226');
-            
-            // Vérifier si des codes intrinsèques au Groupe 1 sont présents (hors H226)
-            const hasOtherG1 = codesH.some(code => code !== 'H226' && codesGroupe1Set.has(code));
-            
-            // Requis si H226 est présent
-            if (hasH226) return true;
-            
-            // Requis si tous les codes sont Groupe 2 (aucun autre G1) ET qu'un Pt d'éclair est présent
-            if (!hasOtherG1 && !isNaN(flashPoint)) return true;
-            
-            return false;
-        }
+function isTSRequired() {
+
+    const flashPoint = parseFloat(
+        document.getElementById('flashPointInput').value
+    );
+
+    const hasH226 = codesH.includes('H226');
+
+    const hasOtherG1 = codesH.some(
+        code => code !== 'H226' && codesGroupe1Set.has(code)
+    );
+
+    // Présence d'un code intrinsèque Groupe 1
+    if (hasOtherG1) {
+        return false;
+    }
+
+    // Présence de H226
+    if (hasH226) {
+        return true;
+    }
+
+    // Tous les codes sont Groupe 2
+    // mais un point d'éclair existe
+    if (!isNaN(flashPoint)) {
+        return true;
+    }
+
+    // Tous les codes Groupe 2 et aucun point d'éclair
+    return false;
+}
 
         function analyzeAndDisplay() {
             const container = document.getElementById('resultContainer');
@@ -1147,29 +1177,101 @@
                 }
             }
 
-            const isH226Critical = checkH226Critical();
-            const tsMissing = isNaN(tsValue) && isTSRequired();
+const isH226Critical = checkH226Critical();
+const isFlashCritical = isFlashPointCritical();
 
-            const codesGroupe1Trouves = codesH.filter(code => isCodeGroupe1(code));
-            const isGroupe1 = codesGroupe1Trouves.length > 0;
-            
-            let groupe = isGroupe1 ? 1 : 2;
+const tsMissing = isNaN(tsValue) && isTSRequired();
+
+const codesGroupe1Trouves = codesH.filter(code => isCodeGroupe1(code));
+
+let isGroupe1 = codesGroupe1Trouves.length > 0;
+
+// Cas CLAP X003 :
+// aucun code Groupe 1 mais TS > point d'éclair
+if (!isGroupe1 && isFlashCritical) {
+    isGroupe1 = true;
+}
+
+let groupe = isGroupe1 ? 1 : 2;
 
             // Détermination du message de motif
             let justificationHTML = '';
-            if (tsMissing) {
-                const reason = codesH.includes('H226') 
-                    ? "Présence de la mention H226" 
-                    : "Codes H relevant du Groupe 2 avec présence d'un point d'éclair";
-                justificationHTML = `<p style="color: var(--danger-color); font-weight: bold;">⚠️ Saisie de la température maximale admissible (TS) obligatoire (${reason}). Impossibilité d'évaluer le basculement TS &gt; Pt d'éclair (Note 1 CLAP X003).</p>`;
-            } else if (isH226Critical) {
-                justificationHTML = `<p>Forcé en <strong>GROUPE 1</strong> car TS (${tsValue}°C) &gt; Point d'éclair (${flashPoint}°C) [Note 1 Fiche CLAP X003 / DESP].</p>`;
-            } else if (isGroupe1) {
-                justificationHTML = `<p>Présence de code(s) H du Groupe 1 : <strong>${codesGroupe1Trouves.join(', ')}</strong></p>`;
-            } else {
-				const flashPointText = isNaN(flashPoint) ? '' : ' (et TS ≤ Point d\'éclair)';
-				justificationHTML = `<p>Aucun code H ne relève des critères du Groupe 1${flashPointText}. Classification en Groupe 2.</p>`;
-			}
+if (tsMissing) {
+
+    const reason = codesH.includes('H226')
+        ? "Présence de la mention H226"
+        : "Présence d'un point d'éclair nécessitant la vérification TS > Point d'éclair";
+
+    justificationHTML = `
+        <p style="color: var(--danger-color); font-weight: bold;">
+            ⚠️ Saisie de la température maximale admissible (TS) obligatoire.
+            ${reason}.
+        </p>
+    `;
+
+}
+else if (
+    !codesGroupe1Trouves.length &&
+    isFlashCritical
+) {
+
+    justificationHTML = `
+        <p>
+            <strong>Classement en GROUPE 1</strong>
+            conformément à la Note 1 de la fiche CLAP X003 :
+            TS (<strong>${tsValue}°C</strong>)
+            est supérieure au point d'éclair
+            (<strong>${flashPoint}°C</strong>).
+        </p>
+
+        <p>
+            Aucun code H intrinsèque de Groupe 1 n'est présent,
+            mais le dépassement du point d'éclair rend le fluide
+            dangereux au sens de l'article 13 de la DESP.
+        </p>
+    `;
+
+}
+else if (
+    codesGroupe1Trouves.some(code => code !== 'H226')
+) {
+
+    justificationHTML = `
+        <p>
+            Présence de code(s) H du Groupe 1 :
+            <strong>${codesGroupe1Trouves.join(', ')}</strong>
+        </p>
+    `;
+
+}
+else if (isH226Critical) {
+
+    justificationHTML = `
+        <p>
+            Forcé en <strong>GROUPE 1</strong>
+            car H226 est présent et
+            TS (${tsValue}°C)
+            est supérieure au point d'éclair
+            (${flashPoint}°C).
+        </p>
+    `;
+
+}
+else {
+
+    const flashPointText =
+        isNaN(flashPoint)
+            ? ''
+            : ` (TS ≤ Point d'éclair)`;
+
+    justificationHTML = `
+        <p>
+            Aucun critère Groupe 1 identifié${flashPointText}.
+            Classification en Groupe 2.
+        </p>
+    `;
+
+}
 
             container.innerHTML = `
                 <div class="result-card ${tsMissing ? '' : 'groupe-' + groupe}" style="${tsMissing ? 'background: #fff3cd; border: 2px solid #ffebaa;' : ''}">
