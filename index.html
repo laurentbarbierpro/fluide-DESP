@@ -850,17 +850,11 @@
                         }
 
                         if (text) {
-                            const matchC = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*C\b/i);
-                            if (matchC) {
-                                foundValues.push(parseFloat(matchC[1]));
-                            } else {
-                                const matchF = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*F\b/i);
-                                if (matchF) {
-                                    const valF = parseFloat(matchF[1]);
-                                    const valC = (valF - 32) * (5 / 9);
-                                    foundValues.push(valC);
-                                }
-                            }
+const val = extractTemperature(text);
+
+if (val !== null) {
+    foundValues.push(val);
+}
                         }
                     });
                 }
@@ -880,6 +874,29 @@
             }
             return null;
         }
+		
+function extractTemperature(text) {
+
+    // Intervalle 110-111 °C
+    let m = text.match(
+        /(\d+(?:\.\d+)?)\s*(?:to|-)\s*(\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*C/i
+    );
+
+    if (m) {
+        return parseFloat(m[1]);
+    }
+
+    // Valeur simple
+    m = text.match(
+        /(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*C\b/i
+    );
+
+    if (m) {
+        return parseFloat(m[1]);
+    }
+
+    return null;
+}
 
         function parseBoilingPointsFromPubChem(data) {
             let foundValues = [];
@@ -896,17 +913,11 @@
                         }
 
                         if (text) {
-                            const matchC = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*C\b/i);
-                            if (matchC) {
-                                foundValues.push(parseFloat(matchC[1]));
-                            } else {
-                                const matchF = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°|deg|degrees)?\s*F\b/i);
-                                if (matchF) {
-                                    const valF = parseFloat(matchF[1]);
-                                    const valC = (valF - 32) * (5 / 9);
-                                    foundValues.push(valC);
-                                }
-                            }
+const val = extractTemperature(text);
+
+if (val !== null) {
+    foundValues.push(val);
+}
                         }
                     });
                 }
